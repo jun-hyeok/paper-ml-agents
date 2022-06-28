@@ -646,9 +646,9 @@ class TrainerSettings(ExportableSettings):
     self_play: Optional[SelfPlaySettings] = None
     behavioral_cloning: Optional[BehavioralCloningSettings] = None
 
-    cattr.register_structure_hook(
-        Dict[RewardSignalType, RewardSignalSettings], RewardSignalSettings.structure
-    )
+    # cattr.register_structure_hook(
+    #     Dict[RewardSignalType, RewardSignalSettings], RewardSignalSettings.structure
+    # )
 
     @network_settings.validator
     def _check_batch_size_seq_length(self, attribute, value):
@@ -820,9 +820,9 @@ class RunOptions(ExportableSettings):
     cattr.register_structure_hook(EnvironmentSettings, strict_to_cls)
     cattr.register_structure_hook(EngineSettings, strict_to_cls)
     cattr.register_structure_hook(CheckpointSettings, strict_to_cls)
-    cattr.register_structure_hook(
-        Dict[str, EnvironmentParameterSettings], EnvironmentParameterSettings.structure
-    )
+    # cattr.register_structure_hook(
+    #     Dict[str, EnvironmentParameterSettings], EnvironmentParameterSettings.structure
+    # )
     cattr.register_structure_hook(Lesson, strict_to_cls)
     cattr.register_structure_hook(
         ParameterRandomizationSettings, ParameterRandomizationSettings.structure

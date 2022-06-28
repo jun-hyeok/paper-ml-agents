@@ -1,5 +1,5 @@
 # # Unity ML-Agents Toolkit
-from mapoca import torch_utils
+# from mapoca import torch_utils
 import yaml
 
 import os
@@ -42,8 +42,10 @@ def get_version_string() -> str:
     return f""" Version information:
   ml-agents: {mapoca.trainers.__version__},
   ml-agents-envs: {mlagents_envs.__version__},
-  Communicator API: {UnityEnvironment.API_VERSION},
-  PyTorch: {torch_utils.torch.__version__}"""
+  Communicator API: {UnityEnvironment.API_VERSION},"""
+
+
+#   PyTorch: {torch_utils.torch.__version__}"""
 
 
 def parse_command_line(argv: Optional[List[str]] = None) -> RunOptions:
@@ -58,7 +60,7 @@ def run_training(run_seed: int, options: RunOptions) -> None:
     :param options: parsed command line arguments
     """
     with hierarchical_timer("run_training.setup"):
-        torch_utils.set_torch_config(options.torch_settings)
+        # torch_utils.set_torch_config(options.torch_settings)
         checkpoint_settings = options.checkpoint_settings
         env_settings = options.env_settings
         engine_settings = options.engine_settings
@@ -171,7 +173,18 @@ def create_environment_factory(
     ) -> UnityEnvironment:
         # Make sure that each environment gets a different seed
         env_seed = seed + worker_id
-        return mapoca_registry[env_name].make(
+        # return mapoca_registry[env_name].make(
+        #     worker_id=worker_id,
+        #     seed=env_seed,
+        #     no_graphics=no_graphics,
+        #     base_port=start_port,
+        #     additional_args=env_args,
+        #     side_channels=side_channels,
+        #     log_folder=log_folder,
+        # )
+        # return ParticlesEnvironment(worker_id=worker_id)
+        return UnityEnvironment(
+            file_name=env_name,
             worker_id=worker_id,
             seed=env_seed,
             no_graphics=no_graphics,
@@ -180,7 +193,6 @@ def create_environment_factory(
             side_channels=side_channels,
             log_folder=log_folder,
         )
-        # return ParticlesEnvironment(worker_id=worker_id)
 
     return create_unity_environment
 
@@ -236,7 +248,7 @@ def run_cli(options: RunOptions) -> None:
     add_timer_metadata("mlagents_version", mapoca.trainers.__version__)
     add_timer_metadata("mlagents_envs_version", mlagents_envs.__version__)
     add_timer_metadata("communication_protocol_version", UnityEnvironment.API_VERSION)
-    add_timer_metadata("pytorch_version", torch_utils.torch.__version__)
+    # add_timer_metadata("pytorch_version", torch_utils.torch.__version__)
     add_timer_metadata("numpy_version", np.__version__)
 
     if options.env_settings.seed == -1:
